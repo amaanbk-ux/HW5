@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *  Amaan Khan / 001
  *
  *   This java file contains the problem solutions of isSubSet, findKthLargest,
  *   and sort2Arrays methods. You should utilize the Java Collection Framework for
@@ -32,10 +32,19 @@ class ProblemSolutions {
 
     public boolean isSubset(int list1[], int list2[]) {
 
-        // ADD YOU CODE HERE -- DON'T FORGET TO ADD YOR NAME AT TOP OF FILE
+        java.util.HashSet<Integer> set = new java.util.HashSet<>();
 
-        return false;
+        for(int num : list1){
+            set.add(num);
+        }
+        for(int num : list2){
+            if(!set.contains(num)){
+                return false;
+            }
+        }
+        return true;
     }
+
 
 
     /**
@@ -50,12 +59,19 @@ class ProblemSolutions {
      * @param k     - the kth maximum element
      * @return      - the value in the array which is the kth maximum value
      */
-
     public int findKthLargest(int[] array, int k) {
+        PriorityQueue<Integer> maxPQ = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
 
-        // ADD YOUR CODE HERE
+        for (int i = 0; i < array.length; i++) {
+            maxPQ.add(array[i]);
+        }
 
-        return 0;
+        while (k > 1) {
+            k--;
+            maxPQ.poll();
+        }
+
+        return maxPQ.poll();
     }
 
 
@@ -74,9 +90,32 @@ class ProblemSolutions {
 
     public int[] sort2Arrays(int[] array1, int[] array2) {
 
-        // ADD YOU CODE HERE
 
-        return null;
+        int[] arrayCombined = new int[array1.length+array2.length];
+
+        for (int i = 0; i < array1.length ; i++) {
+            arrayCombined[i] = array1[i];
+        }
+        for (int i = 0; i <array2.length; i++) {
+            arrayCombined[i+array1.length] = array2[i];
+        }
+
+
+        for (int i = 1; i < arrayCombined.length; i++) {
+            int key = arrayCombined[i];
+            int j = i - 1;
+
+            while (j >= 0 && arrayCombined[j] > key) {
+                arrayCombined[j + 1] = arrayCombined[j];
+                j--;
+            }
+
+            arrayCombined[j + 1] = key;
+        }
+
+
+
+        return arrayCombined;
     }
 
 }
