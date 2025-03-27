@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Amaan Khan / 001
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -246,11 +246,63 @@ public class CuckooHash<K, V> {
 
  	public void put(K key, V value) {
 
-		// ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME AT TOP OF FILE.
-		// Also make sure you read this method's prologue above, it should help
-		// you. Especially the two HINTS in the prologue.
 
-		return;
+		int h1Thing = hash1(key);
+		int h2Thing = hash2(key);
+
+
+		if ((table[h1Thing] != null && table[h1Thing].getBucKey().equals(key) && table[h1Thing].getValue().equals(value)) ||
+				(table[h2Thing] != null && table[h2Thing].getBucKey().equals(key) && table[h2Thing].getValue().equals(value))) {
+
+
+			return;
+		}
+
+
+		K currKeyPoint = key;
+		V currValPoint = value;
+
+
+		int count = 0;
+
+
+		int position = hash1(currKeyPoint);
+
+
+		while (count < CAPACITY) {
+
+
+			if (table[position] == null) {
+				table[position] = new Bucket<>(currKeyPoint, currValPoint);
+				return;
+			}
+
+
+			Bucket<K, V> kicked = table[position];
+
+
+			table[position] = new Bucket<>(currKeyPoint, currValPoint);
+
+
+			currKeyPoint = kicked.getBucKey();
+			currValPoint = kicked.getValue();
+
+
+			if (position == hash1(currKeyPoint)) {
+				position = hash2(currKeyPoint);
+			} else {
+				position = hash1(currKeyPoint);
+			}
+
+
+			count++;
+		}
+
+
+		rehash();
+		put(currKeyPoint, currValPoint);
+
+
 	}
 
 
